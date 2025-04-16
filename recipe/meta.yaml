@@ -1,52 +1,47 @@
+{% set name = "pycrdt-websocket" %}
 {% set version = "0.15.4" %}
 
 package:
-  name: pycrdt-websocket
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/p/pycrdt-websocket/pycrdt_websocket-{{ version }}.tar.gz
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
   sha256: 46612b3580aa70b70fbf20b0adc0b4afec6d95d3bde142739ef26e74dacf4c9e
 
 build:
-  noarch: python
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: True  # [py<38]
 
 requirements:
   host:
-    - hatchling
     - pip
-    - python {{ python_min }}
+    - python
+    - hatchling
   run:
-    - python >={{ python_min }}
+    - python
     - anyio >=3.6.2,<5
     - sqlite-anyio >=0.2.3,<0.3.0
     - pycrdt >=0.10.3,<0.13.0
 
+# pytest needs hypercorn in conftest.py, which is not available.
 test:
-  source_files:
-    - tests
-  requires:
-    - nodejs >=18,<19
-    - pip
-    - pytest-cov
-    - httpx-ws >=0.5.2
-    - hypercorn
-    - trio >=0.25.0
-    - sniffio
-    - python {{ python_min }}
   imports:
     - pycrdt_websocket
   commands:
     - pip check
+  requires:
+    - pip
 
 about:
   home: https://github.com/jupyter-server/pycrdt-websocket
+  summary: WebSocket connector for pycrdt
   license: MIT
   license_family: MIT
   license_file: LICENSE
-  summary: WebSocket connector for pycrdt
+  description: Pycrdt-websocket is a Python library for building WebSocket servers and clients that connect and synchronize shared documents. It can be used to create collaborative web applications.
+  dev_url: https://github.com/jupyter-server/pycrdt-websocket
   doc_url: https://davidbrochart.github.io/pycrdt-websocket
 
 extra:
