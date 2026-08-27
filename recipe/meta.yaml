@@ -1,18 +1,18 @@
 {% set name = "pycrdt-websocket" %}
-{% set version = "0.16.0" %}
+{% set version = "0.16.4" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
-  sha256: 89d4d830f41028c55cc9877635f73f94f49131ca73ffac7353d0be421150d0fd
+  sha256: 6d90f36f4a1d51b3736caf8698fc3745ff44bb20cb820ff0033bfc76d4737da9
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<39]
+  skip: true  # [py<310]
 
 requirements:
   host:
@@ -23,8 +23,8 @@ requirements:
     - python
     - anyio >=3.6.2,<5
     - sqlite-anyio >=0.2.3,<0.3.0
-    - pycrdt >=0.12.16,<0.13.0
-    - pycrdt-store >=0.1.0,<0.2.0
+    - pycrdt >=0.14.0,<0.15.0
+    - pycrdt-store >=0.1.5,<0.2.0
 
 # pytest needs httpx_ws in conftest.py, which is not available.
 test:
